@@ -5,9 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Trinity Preços</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -57,12 +55,14 @@
       margin-bottom: 6px;
     }
 
-    .campo input {
+    .campo input,
+    .campo select {
       width: 100%;
       padding: 12px;
       border: 1px solid #d1d5db;
       border-radius: 8px;
       font-size: 16px;
+      background: #fff;
     }
 
     .acoes {
@@ -165,8 +165,20 @@
       display: none;
     }
 
-    .hidden {
+    .info {
+      background: #eff6ff;
+      color: #1e3a8a;
+      border: 1px solid #bfdbfe;
+      border-radius: 10px;
+      padding: 12px;
+      margin-top: 14px;
       display: none;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .hidden {
+      display: none !important;
     }
 
     .rodape-nota {
@@ -179,17 +191,58 @@
       font-weight: 700;
     }
 
+    .detalhado-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 16px;
+      background: #fafafa;
+      margin-top: 12px;
+    }
+
+    .detalhado-linha {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .detalhado-linha:last-child {
+      border-bottom: none;
+    }
+
+    .detalhado-linha .titulo {
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .detalhado-linha .valor {
+      font-weight: 700;
+      font-size: 15px;
+      text-align: right;
+    }
+
+    .destaque-total {
+      font-size: 20px !important;
+    }
+
+    .bloco-filtros {
+      margin-top: 16px;
+      padding-top: 8px;
+      border-top: 1px solid #e5e7eb;
+    }
+
     @media (max-width: 640px) {
-      h1 {
-        font-size: 24px;
+      h1 { font-size: 24px; }
+      .container { padding: 14px; }
+      .card { padding: 14px; }
+
+      .detalhado-linha {
+        grid-template-columns: 1fr;
       }
 
-      .container {
-        padding: 14px;
-      }
-
-      .card {
-        padding: 14px;
+      .detalhado-linha .valor {
+        text-align: left;
       }
     }
   </style>
@@ -198,7 +251,7 @@
   <div class="container">
     <div class="card">
       <h1>Trinity Preços</h1>
-      <p class="subtitulo">Calculadora de cachê com 6 e 7 músicos, mínimos e arredondamento em múltiplos de R$ 50,00.</p>
+      <p class="subtitulo">Calculadora de cachê com modo completo e detalhado.</p>
 
       <div class="grid">
         <div class="campo">
@@ -210,6 +263,60 @@
           <label for="tempo">Tempo de ida (h)</label>
           <input type="text" id="tempo" placeholder="Ex.: 2,5" />
         </div>
+
+        <div class="campo">
+          <label for="periodoBase">Período</label>
+          <select id="periodoBase">
+            <option value="diurno">Diurno</option>
+            <option value="noturno">Noturno</option>
+          </select>
+        </div>
+
+        <div class="campo">
+          <label for="modoExibicao">Modo de exibição</label>
+          <select id="modoExibicao">
+            <option value="completo">Completo — abrir todas as tabelas</option>
+            <option value="detalhado">Detalhado — resultado filtrado</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="bloco-filtros hidden" id="filtrosDetalhados">
+        <div class="grid">
+          <div class="campo">
+            <label for="numMusicos">Número de músicos</label>
+            <select id="numMusicos">
+              <option value="6">6 músicos</option>
+              <option value="7">7 músicos</option>
+            </select>
+          </div>
+
+          <div class="campo">
+            <label for="tipoEvento">Tipo de evento</label>
+            <select id="tipoEvento">
+              <option value="Bar promo">Bar promo</option>
+              <option value="Padrão">Padrão</option>
+              <option value="Particular">Particular</option>
+              <option value="Pref. distante">Pref. distante</option>
+              <option value="Prefeitura local">Prefeitura local</option>
+            </select>
+          </div>
+
+          <div class="campo">
+            <label for="tipoTransporteDetalhado">Transporte</label>
+            <select id="tipoTransporteDetalhado">
+              <option value="proprio">Veículo próprio</option>
+              <option value="van">Van calculada</option>
+              <option value="van_manual">Van manual/orçada</option>
+              <option value="comparar">Comparar veículo próprio + van calculada</option>
+            </select>
+          </div>
+
+          <div class="campo hidden" id="campoVanManualWrap">
+            <label for="valorVanManual">Valor da van manual/orçada (R$)</label>
+            <input type="text" id="valorVanManual" placeholder="Ex.: 1200,00" />
+          </div>
+        </div>
       </div>
 
       <div class="acoes">
@@ -218,6 +325,7 @@
       </div>
 
       <div class="erro" id="erroBox"></div>
+      <div class="info" id="infoBox"></div>
     </div>
 
     <div class="card hidden" id="resumoCard">
@@ -227,6 +335,7 @@
 
     <div class="card hidden" id="resultadosCard">
       <h2>Resultados</h2>
+      <div id="resultadoDetalhado" class="hidden"></div>
       <div id="tabelasContainer"></div>
       <div class="rodape-nota">* aplicado valor mínimo</div>
     </div>
@@ -289,17 +398,29 @@
 
     const distanciaInput = document.getElementById("distancia");
     const tempoInput = document.getElementById("tempo");
+    const periodoBaseSelect = document.getElementById("periodoBase");
+    const modoExibicaoSelect = document.getElementById("modoExibicao");
+    const filtrosDetalhados = document.getElementById("filtrosDetalhados");
+    const numMusicosSelect = document.getElementById("numMusicos");
+    const tipoEventoSelect = document.getElementById("tipoEvento");
+    const tipoTransporteDetalhadoSelect = document.getElementById("tipoTransporteDetalhado");
+    const campoVanManualWrap = document.getElementById("campoVanManualWrap");
+    const valorVanManualInput = document.getElementById("valorVanManual");
+
     const btnCalcular = document.getElementById("btnCalcular");
     const btnLimpar = document.getElementById("btnLimpar");
+
     const erroBox = document.getElementById("erroBox");
+    const infoBox = document.getElementById("infoBox");
     const resumoCard = document.getElementById("resumoCard");
     const resumoGrid = document.getElementById("resumoGrid");
     const resultadosCard = document.getElementById("resultadosCard");
     const tabelasContainer = document.getElementById("tabelasContainer");
+    const resultadoDetalhado = document.getElementById("resultadoDetalhado");
 
     function normalizarNumero(valor) {
       if (typeof valor !== "string") return NaN;
-      const limpo = valor.trim().replace(/\s+/g, "").replace(",", ".");
+      const limpo = valor.trim().replace(/\s+/g, "").replace(/\./g, "").replace(",", ".");
       if (!limpo) return NaN;
       const numero = Number(limpo);
       return Number.isFinite(numero) ? numero : NaN;
@@ -333,14 +454,53 @@
       erroBox.textContent = "";
     }
 
-    function calcularLinha({ evento, periodo, transporte, numMusicos, horasTotais, distanciaTotal }) {
+    function exibirInfo(msg) {
+      infoBox.innerHTML = msg;
+      infoBox.style.display = "block";
+    }
+
+    function ocultarInfo() {
+      infoBox.style.display = "none";
+      infoBox.innerHTML = "";
+    }
+
+    function obterRecomendacaoTransporte(periodo, distanciaTotal) {
+      if (periodo === "noturno") {
+        return distanciaTotal > 75 ? "van" : "proprio";
+      }
+      return distanciaTotal > 150 ? "van" : "proprio";
+    }
+
+    function nomeTransporte(tipo) {
+      if (tipo === "proprio") return "veículo próprio";
+      if (tipo === "van") return "van";
+      if (tipo === "van_manual") return "van manual/orçada";
+      return tipo;
+    }
+
+    function calcularLinha({
+      evento,
+      periodo,
+      transporte,
+      numMusicos,
+      horasTotais,
+      distanciaTotal,
+      valorVanManual = null
+    }) {
       const hh = CONFIG.hh[periodo][evento];
-      const custoTransporte = CONFIG.custoKm[transporte];
       const maoDeObra = numMusicos * hh * horasTotais;
-      const transporteValor = distanciaTotal * custoTransporte;
+
+      let transporteValor = 0;
+      if (transporte === "proprio") {
+        transporteValor = distanciaTotal * CONFIG.custoKm.proprio;
+      } else if (transporte === "van") {
+        transporteValor = distanciaTotal * CONFIG.custoKm.van;
+      } else if (transporte === "van_manual") {
+        transporteValor = valorVanManual;
+      }
+
       const totalCalculado = maoDeObra + transporteValor;
       const minimo = CONFIG.minimos[numMusicos][evento];
-
       const minimoAplicado = totalCalculado < minimo;
       const totalAposMinimo = minimoAplicado ? minimo : totalCalculado;
       const totalFinal = arredondarParaCima50(totalAposMinimo);
@@ -360,6 +520,7 @@
       const itens = [
         { label: "Distância de ida (km)", valor: formatarNumeroBR(dados.distanciaIda) },
         { label: "Tempo de ida (h)", valor: formatarNumeroBR(dados.tempoIda) },
+        { label: "Período base", valor: dados.periodoBase === "diurno" ? "Diurno" : "Noturno" },
         { label: "Distância total (km)", valor: formatarNumeroBR(dados.distanciaTotal) },
         { label: "Tempo total deslocamento (h)", valor: formatarNumeroBR(dados.tempoTotalDeslocamento) },
         { label: "Horas totais de mão de obra", valor: formatarNumeroBR(dados.horasTotaisMaoDeObra) }
@@ -420,10 +581,7 @@
               <td>${resultado.evento}</td>
               <td>${formatarMoeda(resultado.maoDeObra)}</td>
               <td>${formatarMoeda(resultado.transporte)}</td>
-              <td>
-                ${formatarMoeda(resultado.totalFinal)}
-                ${resultado.minimoAplicado ? '<span class="tag-minimo">*</span>' : ""}
-              </td>
+              <td>${formatarMoeda(resultado.totalFinal)} ${resultado.minimoAplicado ? '<span class="tag-minimo">*</span>' : ''}</td>
             </tr>
           `;
         });
@@ -443,70 +601,116 @@
       return bloco;
     }
 
-    function calcularTudo() {
-      ocultarErro();
+    function montarCardDetalhado({
+      titulo,
+      subtitulo,
+      resultado,
+      transporteTexto
+    }) {
+      return `
+        <div class="detalhado-card">
+          <h3>${titulo}</h3>
+          <div class="observacao">${subtitulo}</div>
 
-      const distanciaIda = normalizarNumero(distanciaInput.value);
-      const tempoIda = normalizarNumero(tempoInput.value);
+          <div class="detalhado-linha">
+            <div class="titulo">Mão de obra</div>
+            <div class="valor">${formatarMoeda(resultado.maoDeObra)}</div>
+          </div>
 
-      if (!Number.isFinite(distanciaIda) || distanciaIda <= 0) {
-        exibirErro("Informe uma distância de ida válida em km.");
-        return;
-      }
+          <div class="detalhado-linha">
+            <div class="titulo">Transporte (${transporteTexto})</div>
+            <div class="valor">${formatarMoeda(resultado.transporte)}</div>
+          </div>
 
-      if (!Number.isFinite(tempoIda) || tempoIda <= 0) {
-        exibirErro("Informe um tempo de ida válido em horas.");
-        return;
-      }
+          <div class="detalhado-linha">
+            <div class="titulo">Total geral</div>
+            <div class="valor destaque-total">
+              ${formatarMoeda(resultado.totalFinal)} ${resultado.minimoAplicado ? '<span class="tag-minimo">*</span>' : ''}
+            </div>
+          </div>
+        </div>
+      `;
+    }
 
-      const distanciaTotal = distanciaIda * 2;
-      const tempoTotalDeslocamento = tempoIda * 2;
-      const horasTotaisMaoDeObra =
-        CONFIG.horasShow +
-        CONFIG.horasMontagem +
-        tempoTotalDeslocamento;
-
-      const dadosBase = {
-        distanciaIda,
-        tempoIda,
-        distanciaTotal,
-        tempoTotalDeslocamento,
-        horasTotaisMaoDeObra
-      };
-
-      gerarResumo(dadosBase);
+    function renderizarModoCompleto(dadosBase) {
+      resultadoDetalhado.classList.add("hidden");
+      resultadoDetalhado.innerHTML = "";
       tabelasContainer.innerHTML = "";
 
       CONFIG.tabelas.forEach(tabelaConfig => {
         const tabela = montarTabela(tabelaConfig, dadosBase);
         tabelasContainer.appendChild(tabela);
       });
-
-      resumoCard.classList.remove("hidden");
-      resultadosCard.classList.remove("hidden");
     }
 
-    function limparTudo() {
-      distanciaInput.value = "";
-      tempoInput.value = "";
-      ocultarErro();
-      resumoCard.classList.add("hidden");
-      resultadosCard.classList.add("hidden");
-      resumoGrid.innerHTML = "";
+    function renderizarModoDetalhado(dadosBase) {
+      const periodo = periodoBaseSelect.value;
+      const numMusicos = Number(numMusicosSelect.value);
+      const evento = tipoEventoSelect.value;
+      const tipoTransporte = tipoTransporteDetalhadoSelect.value;
+      const recomendacao = obterRecomendacaoTransporte(periodo, dadosBase.distanciaTotal);
+
       tabelasContainer.innerHTML = "";
-      distanciaInput.focus();
-    }
+      resultadoDetalhado.innerHTML = "";
+      resultadoDetalhado.classList.remove("hidden");
 
-    btnCalcular.addEventListener("click", calcularTudo);
-    btnLimpar.addEventListener("click", limparTudo);
+      if (tipoTransporte === "van_manual") {
+        const valorVanManual = normalizarNumero(valorVanManualInput.value);
+        if (!Number.isFinite(valorVanManual) || valorVanManual < 0) {
+          exibirErro("Informe um valor válido para a van manual/orçada.");
+          return false;
+        }
 
-    distanciaInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") calcularTudo();
-    });
+        const resultado = calcularLinha({
+          evento,
+          periodo,
+          transporte: "van_manual",
+          numMusicos,
+          horasTotais: dadosBase.horasTotaisMaoDeObra,
+          distanciaTotal: dadosBase.distanciaTotal,
+          valorVanManual
+        });
 
-    tempoInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") calcularTudo();
-    });
-  </script>
-</body>
-</html>
+        resultadoDetalhado.innerHTML = montarCardDetalhado({
+          titulo: "Resultado detalhado",
+          subtitulo: `${periodo === "diurno" ? "Diurno" : "Noturno"} • ${numMusicos} músicos • ${evento}`,
+          resultado,
+          transporteTexto: "van manual/orçada"
+        });
+
+        if (recomendacao !== "van") {
+          exibirInfo(`Recomendação logística contrariada: para este cenário, a sugestão seria <strong>${nomeTransporte(recomendacao)}</strong>, mas foi escolhida <strong>van manual/orçada</strong>.`);
+        }
+
+        return true;
+      }
+
+      if (tipoTransporte === "comparar") {
+        const resultadoProprio = calcularLinha({
+          evento,
+          periodo,
+          transporte: "proprio",
+          numMusicos,
+          horasTotais: dadosBase.horasTotaisMaoDeObra,
+          distanciaTotal: dadosBase.distanciaTotal
+        });
+
+        const resultadoVan = calcularLinha({
+          evento,
+          periodo,
+          transporte: "van",
+          numMusicos,
+          horasTotais: dadosBase.horasTotaisMaoDeObra,
+          distanciaTotal: dadosBase.distanciaTotal
+        });
+
+        resultadoDetalhado.innerHTML = `
+          ${montarCardDetalhado({
+            titulo: "Resultado detalhado — Veículo próprio",
+            subtitulo: `${periodo === "diurno" ? "Diurno" : "Noturno"} • ${numMusicos} músicos • ${evento}`,
+            resultado: resultadoProprio,
+            transporteTexto: "veículo próprio"
+          })}
+          ${montarCardDetalhado({
+            titulo: "Resultado detalhado — Van calculada",
+    
