@@ -3,107 +3,510 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Calculadora Trinity Preços</title>
+  <title>Trinity Preços</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      margin: 24px;
-      background: #f5f5f5;
-      color: #222;
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f3f4f6;
+      color: #1f2937;
     }
+
     .container {
-      max-width: 1200px;
+      max-width: 1280px;
       margin: 0 auto;
+      padding: 20px;
     }
+
     .card {
-      background: #fff;
-      border-radius: 10px;
-      padding: 16px;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
       margin-bottom: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
+
     h1, h2, h3 {
       margin-top: 0;
     }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .subtitulo {
+      margin-top: 0;
+      color: #6b7280;
+      font-size: 14px;
+    }
+
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 12px;
+      gap: 14px;
     }
-    label {
+
+    .campo label {
       display: block;
-      font-weight: bold;
+      font-weight: 700;
       margin-bottom: 6px;
     }
-    input {
+
+    .campo input {
       width: 100%;
-      padding: 10px;
-      font-size: 16px;
-      box-sizing: border-box;
-    }
-    button {
-      padding: 12px 18px;
-      font-size: 16px;
-      cursor: pointer;
-      border: 0;
+      padding: 12px;
+      border: 1px solid #d1d5db;
       border-radius: 8px;
+      font-size: 16px;
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 12px;
-      background: #fff;
+
+    .acoes {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
     }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 10px;
-      text-align: left;
+
+    button {
+      border: none;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
     }
-    th {
-      background: #efefef;
+
+    .btn-primary {
+      background: #111827;
+      color: white;
     }
-    .note {
-      font-size: 14px;
+
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .resumo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
+    }
+
+    .resumo-item {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 12px;
+    }
+
+    .resumo-item .label {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 6px;
+    }
+
+    .resumo-item .valor {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .tabela-bloco {
+      margin-bottom: 28px;
+    }
+
+    .tabela-wrap {
+      overflow-x: auto;
       margin-top: 10px;
     }
+
+    table {
+      width: 100%;
+      min-width: 760px;
+      border-collapse: collapse;
+      background: white;
+    }
+
+    th, td {
+      border: 1px solid #e5e7eb;
+      padding: 10px;
+      text-align: left;
+      vertical-align: top;
+      font-size: 14px;
+    }
+
+    th {
+      background: #f3f4f6;
+      font-weight: 700;
+    }
+
+    .grupo {
+      background: #eef2ff;
+      font-weight: 700;
+    }
+
+    .observacao {
+      font-size: 13px;
+      color: #6b7280;
+      margin-top: 8px;
+    }
+
+    .erro {
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+      border-radius: 10px;
+      padding: 12px;
+      margin-top: 14px;
+      display: none;
+    }
+
     .hidden {
       display: none;
+    }
+
+    .rodape-nota {
+      font-size: 14px;
+      font-weight: 700;
+      margin-top: 8px;
+    }
+
+    .tag-minimo {
+      font-weight: 700;
+    }
+
+    @media (max-width: 640px) {
+      h1 {
+        font-size: 24px;
+      }
+
+      .container {
+        padding: 14px;
+      }
+
+      .card {
+        padding: 14px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="card">
-      <h1>Calculadora Trinity Preços</h1>
+      <h1>Trinity Preços</h1>
+      <p class="subtitulo">Calculadora de cachê com 6 e 7 músicos, mínimos e arredondamento em múltiplos de R$ 50,00.</p>
+
       <div class="grid">
-        <div>
+        <div class="campo">
           <label for="distancia">Distância de ida (km)</label>
           <input type="text" id="distancia" placeholder="Ex.: 120,5" />
         </div>
-        <div>
+
+        <div class="campo">
           <label for="tempo">Tempo de ida (h)</label>
           <input type="text" id="tempo" placeholder="Ex.: 2,5" />
         </div>
       </div>
-      <div style="margin-top:16px;">
-        <button id="calcularBtn">Calcular</button>
+
+      <div class="acoes">
+        <button class="btn-primary" id="btnCalcular">Calcular</button>
+        <button class="btn-secondary" id="btnLimpar" type="button">Limpar</button>
       </div>
+
+      <div class="erro" id="erroBox"></div>
     </div>
 
     <div class="card hidden" id="resumoCard">
       <h2>Resumo</h2>
-      <div id="resumo"></div>
+      <div class="resumo-grid" id="resumoGrid"></div>
     </div>
 
     <div class="card hidden" id="resultadosCard">
       <h2>Resultados</h2>
-      <div id="tabelas"></div>
-      <div class="note">* aplicado valor mínimo</div>
+      <div id="tabelasContainer"></div>
+      <div class="rodape-nota">* aplicado valor mínimo</div>
     </div>
   </div>
 
   <script>
-    // JavaScript entra aqui
+    const CONFIG = {
+      horasShow: 2,
+      horasMontagem: 1,
+      custoKm: {
+        proprio: 1.9,
+        van: 5.0
+      },
+      hh: {
+        diurno: {
+          "Bar promo": 50.0,
+          "Padrão": 55.0,
+          "Particular": 65.0,
+          "Pref. distante": 70.0,
+          "Prefeitura local": 95.0
+        },
+        noturno: {
+          "Bar promo": 65.0,
+          "Padrão": 71.5,
+          "Particular": 84.5,
+          "Pref. distante": 91.0,
+          "Prefeitura local": 95.0
+        }
+      },
+      minimos: {
+        6: {
+          "Bar promo": 1500.0,
+          "Padrão": 1800.0,
+          "Particular": 2100.0,
+          "Pref. distante": 2500.0,
+          "Prefeitura local": 2350.0
+        },
+        7: {
+          "Bar promo": 1750.0,
+          "Padrão": 2100.0,
+          "Particular": 2450.0,
+          "Pref. distante": 2950.0,
+          "Prefeitura local": 2750.0
+        }
+      },
+      tabelas: [
+        { titulo: "Tabela – Diurno (Veículo Próprio)", periodo: "diurno", transporte: "proprio" },
+        { titulo: "Tabela – Diurno (Van)", periodo: "diurno", transporte: "van" },
+        { titulo: "Tabela – Noturno (Veículo Próprio)", periodo: "noturno", transporte: "proprio" },
+        { titulo: "Tabela – Noturno (Van)", periodo: "noturno", transporte: "van" }
+      ],
+      eventos: [
+        "Bar promo",
+        "Padrão",
+        "Particular",
+        "Pref. distante",
+        "Prefeitura local"
+      ]
+    };
+
+    const distanciaInput = document.getElementById("distancia");
+    const tempoInput = document.getElementById("tempo");
+    const btnCalcular = document.getElementById("btnCalcular");
+    const btnLimpar = document.getElementById("btnLimpar");
+    const erroBox = document.getElementById("erroBox");
+    const resumoCard = document.getElementById("resumoCard");
+    const resumoGrid = document.getElementById("resumoGrid");
+    const resultadosCard = document.getElementById("resultadosCard");
+    const tabelasContainer = document.getElementById("tabelasContainer");
+
+    function normalizarNumero(valor) {
+      if (typeof valor !== "string") return NaN;
+      const limpo = valor.trim().replace(/\s+/g, "").replace(",", ".");
+      if (!limpo) return NaN;
+      const numero = Number(limpo);
+      return Number.isFinite(numero) ? numero : NaN;
+    }
+
+    function formatarNumeroBR(valor) {
+      return valor.toLocaleString("pt-BR", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+    }
+
+    function formatarMoeda(valor) {
+      return valor.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+      });
+    }
+
+    function arredondarParaCima50(valor) {
+      return Math.ceil(valor / 50) * 50;
+    }
+
+    function exibirErro(msg) {
+      erroBox.textContent = msg;
+      erroBox.style.display = "block";
+    }
+
+    function ocultarErro() {
+      erroBox.style.display = "none";
+      erroBox.textContent = "";
+    }
+
+    function calcularLinha({ evento, periodo, transporte, numMusicos, horasTotais, distanciaTotal }) {
+      const hh = CONFIG.hh[periodo][evento];
+      const custoTransporte = CONFIG.custoKm[transporte];
+      const maoDeObra = numMusicos * hh * horasTotais;
+      const transporteValor = distanciaTotal * custoTransporte;
+      const totalCalculado = maoDeObra + transporteValor;
+      const minimo = CONFIG.minimos[numMusicos][evento];
+
+      const minimoAplicado = totalCalculado < minimo;
+      const totalAposMinimo = minimoAplicado ? minimo : totalCalculado;
+      const totalFinal = arredondarParaCima50(totalAposMinimo);
+
+      return {
+        evento,
+        maoDeObra,
+        transporte: transporteValor,
+        totalCalculado,
+        minimo,
+        minimoAplicado,
+        totalFinal
+      };
+    }
+
+    function gerarResumo(dados) {
+      const itens = [
+        { label: "Distância de ida (km)", valor: formatarNumeroBR(dados.distanciaIda) },
+        { label: "Tempo de ida (h)", valor: formatarNumeroBR(dados.tempoIda) },
+        { label: "Distância total (km)", valor: formatarNumeroBR(dados.distanciaTotal) },
+        { label: "Tempo total deslocamento (h)", valor: formatarNumeroBR(dados.tempoTotalDeslocamento) },
+        { label: "Horas totais de mão de obra", valor: formatarNumeroBR(dados.horasTotaisMaoDeObra) }
+      ];
+
+      resumoGrid.innerHTML = itens.map(item => `
+        <div class="resumo-item">
+          <div class="label">${item.label}</div>
+          <div class="valor">${item.valor}</div>
+        </div>
+      `).join("");
+    }
+
+    function montarTabela(tabelaConfig, dadosBase) {
+      const bloco = document.createElement("div");
+      bloco.className = "tabela-bloco";
+
+      const titulo = document.createElement("h3");
+      titulo.textContent = tabelaConfig.titulo;
+      bloco.appendChild(titulo);
+
+      const wrap = document.createElement("div");
+      wrap.className = "tabela-wrap";
+
+      const table = document.createElement("table");
+
+      let html = `
+        <thead>
+          <tr>
+            <th>Tipo de evento</th>
+            <th>Mão de obra</th>
+            <th>Transporte</th>
+            <th>Total geral</th>
+          </tr>
+        </thead>
+        <tbody>
+      `;
+
+      [6, 7].forEach(numMusicos => {
+        html += `
+          <tr class="grupo">
+            <td colspan="4">${numMusicos} músicos</td>
+          </tr>
+        `;
+
+        CONFIG.eventos.forEach(evento => {
+          const resultado = calcularLinha({
+            evento,
+            periodo: tabelaConfig.periodo,
+            transporte: tabelaConfig.transporte,
+            numMusicos,
+            horasTotais: dadosBase.horasTotaisMaoDeObra,
+            distanciaTotal: dadosBase.distanciaTotal
+          });
+
+          html += `
+            <tr>
+              <td>${resultado.evento}</td>
+              <td>${formatarMoeda(resultado.maoDeObra)}</td>
+              <td>${formatarMoeda(resultado.transporte)}</td>
+              <td>
+                ${formatarMoeda(resultado.totalFinal)}
+                ${resultado.minimoAplicado ? '<span class="tag-minimo">*</span>' : ""}
+              </td>
+            </tr>
+          `;
+        });
+      });
+
+      html += `</tbody>`;
+      table.innerHTML = html;
+
+      wrap.appendChild(table);
+      bloco.appendChild(wrap);
+
+      const obs = document.createElement("div");
+      obs.className = "observacao";
+      obs.textContent = "Total geral arredondado para cima em múltiplos de R$ 50,00.";
+      bloco.appendChild(obs);
+
+      return bloco;
+    }
+
+    function calcularTudo() {
+      ocultarErro();
+
+      const distanciaIda = normalizarNumero(distanciaInput.value);
+      const tempoIda = normalizarNumero(tempoInput.value);
+
+      if (!Number.isFinite(distanciaIda) || distanciaIda <= 0) {
+        exibirErro("Informe uma distância de ida válida em km.");
+        return;
+      }
+
+      if (!Number.isFinite(tempoIda) || tempoIda <= 0) {
+        exibirErro("Informe um tempo de ida válido em horas.");
+        return;
+      }
+
+      const distanciaTotal = distanciaIda * 2;
+      const tempoTotalDeslocamento = tempoIda * 2;
+      const horasTotaisMaoDeObra =
+        CONFIG.horasShow +
+        CONFIG.horasMontagem +
+        tempoTotalDeslocamento;
+
+      const dadosBase = {
+        distanciaIda,
+        tempoIda,
+        distanciaTotal,
+        tempoTotalDeslocamento,
+        horasTotaisMaoDeObra
+      };
+
+      gerarResumo(dadosBase);
+      tabelasContainer.innerHTML = "";
+
+      CONFIG.tabelas.forEach(tabelaConfig => {
+        const tabela = montarTabela(tabelaConfig, dadosBase);
+        tabelasContainer.appendChild(tabela);
+      });
+
+      resumoCard.classList.remove("hidden");
+      resultadosCard.classList.remove("hidden");
+    }
+
+    function limparTudo() {
+      distanciaInput.value = "";
+      tempoInput.value = "";
+      ocultarErro();
+      resumoCard.classList.add("hidden");
+      resultadosCard.classList.add("hidden");
+      resumoGrid.innerHTML = "";
+      tabelasContainer.innerHTML = "";
+      distanciaInput.focus();
+    }
+
+    btnCalcular.addEventListener("click", calcularTudo);
+    btnLimpar.addEventListener("click", limparTudo);
+
+    distanciaInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") calcularTudo();
+    });
+
+    tempoInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") calcularTudo();
+    });
   </script>
 </body>
 </html>
