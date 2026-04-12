@@ -1,0 +1,1633 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trinity Preços</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f3f4f6;
+      color: #1f2937;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      margin-bottom: 20px;
+    }
+
+    h1, h2, h3 {
+      margin-top: 0;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .subtitulo {
+      margin-top: 0;
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+    }
+
+    .campo label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .campo input,
+    .campo select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 16px;
+      background: #fff;
+    }
+
+    .acoes {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    button {
+      border: none;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: #111827;
+      color: white;
+    }
+
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .btn-copy {
+      background: #dbeafe;
+      color: #1e3a8a;
+    }
+
+    .btn-copy-orcamento {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .btn-copy-tech {
+      background: #ede9fe;
+      color: #5b21b6;
+    }
+
+    .resumo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
+    }
+
+    .resumo-item {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 12px;
+    }
+
+    .resumo-item .label {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 6px;
+    }
+
+    .resumo-item .valor {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .tabela-bloco {
+      margin-bottom: 28px;
+    }
+
+    .tabela-wrap {
+      overflow-x: auto;
+      margin-top: 10px;
+    }
+
+    table {
+      width: 100%;
+      min-width: 760px;
+      border-collapse: collapse;
+      background: white;
+    }
+
+    th, td {
+      border: 1px solid #e5e7eb;
+      padding: 10px;
+      text-align: left;
+      vertical-align: top;
+      font-size: 14px;
+    }
+
+    th {
+      background: #f3f4f6;
+      font-weight: 700;
+    }
+
+    .grupo {
+      background: #eef2ff;
+      font-weight: 700;
+    }
+
+    .observacao {
+      font-size: 13px;
+      color: #6b7280;
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+
+    .erro {
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+      border-radius: 10px;
+      padding: 12px;
+      margin-top: 14px;
+      display: none;
+    }
+
+    .info {
+      background: #eff6ff;
+      color: #1e3a8a;
+      border: 1px solid #bfdbfe;
+      border-radius: 10px;
+      padding: 12px;
+      margin-top: 14px;
+      display: none;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .ok {
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+      border-radius: 10px;
+      padding: 12px;
+      margin-top: 14px;
+      display: none;
+      font-size: 14px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .rodape-nota {
+      font-size: 14px;
+      font-weight: 700;
+      margin-top: 8px;
+    }
+
+    .tag-minimo {
+      font-weight: 700;
+    }
+
+    .detalhado-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 16px;
+      background: #fafafa;
+      margin-top: 12px;
+    }
+
+    .detalhado-linha {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .detalhado-linha:last-child {
+      border-bottom: none;
+    }
+
+    .detalhado-linha .titulo {
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .detalhado-linha .valor {
+      font-weight: 700;
+      font-size: 15px;
+      text-align: right;
+    }
+
+    .destaque-total {
+      font-size: 20px !important;
+    }
+
+    .bloco-filtros {
+      margin-top: 16px;
+      padding-top: 8px;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    @media (max-width: 640px) {
+      h1 { font-size: 24px; }
+      .container { padding: 14px; }
+      .card { padding: 14px; }
+
+      .detalhado-linha {
+        grid-template-columns: 1fr;
+      }
+
+      .detalhado-linha .valor {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>Trinity Preços</h1>
+      <p class="subtitulo">Calculadora de cachê com modo completo e detalhado.</p>
+
+      <div class="grid">
+        <div class="campo">
+          <label for="distancia">Distância de ida (km)</label>
+          <input type="text" id="distancia" placeholder="Ex.: 120,5" />
+        </div>
+
+        <div class="campo">
+          <label for="tempo">Tempo de ida (h)</label>
+          <input type="text" id="tempo" placeholder="Ex.: 2,5" />
+        </div>
+
+        <div class="campo">
+          <label for="modoExibicao">Modo de exibição</label>
+          <select id="modoExibicao">
+            <option value="completo">Completo — abrir todas as tabelas</option>
+            <option value="detalhado">Detalhado — resultado filtrado</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="bloco-filtros hidden" id="filtrosDetalhados">
+        <div class="grid">
+          <div class="campo">
+            <label for="periodoBase">Período</label>
+            <select id="periodoBase">
+              <option value="diurno">Diurno</option>
+              <option value="noturno">Noturno</option>
+            </select>
+          </div>
+
+          <div class="campo">
+            <label for="tempoShowDetalhado">Tempo de show (h)</label>
+            <input type="text" id="tempoShowDetalhado" value="2" placeholder="Ex.: 2" />
+          </div>
+
+          <div class="campo">
+            <label for="numMusicos">Número de músicos</label>
+            <select id="numMusicos">
+              <option value="6">6 músicos</option>
+              <option value="7">7 músicos</option>
+            </select>
+          </div>
+
+          <div class="campo">
+            <label for="tipoEvento">Tipo de evento</label>
+            <select id="tipoEvento">
+              <option value="Bar promo">Bar promo</option>
+              <option value="Padrão">Padrão</option>
+              <option value="Particular">Particular</option>
+              <option value="Pref. distante">Pref. distante</option>
+              <option value="Prefeitura local">Prefeitura local</option>
+            </select>
+          </div>
+
+          <div class="campo">
+            <label for="cidadeDestino">Cidade / destino</label>
+            <input type="text" id="cidadeDestino" placeholder="Ex.: São Francisco de Paula" />
+          </div>
+
+          <div class="campo">
+            <label for="nomeSolicitante">Nome do solicitante (opcional)</label>
+            <input type="text" id="nomeSolicitante" placeholder="Ex.: Renato" />
+          </div>
+
+          <div class="campo">
+            <label for="tipoTransporteDetalhado">Transporte</label>
+            <select id="tipoTransporteDetalhado">
+              <option value="proprio">Veículo próprio</option>
+              <option value="van">Van calculada</option>
+              <option value="van_manual">Van manual/orçada</option>
+              <option value="comparar">Comparar veículo próprio + van calculada</option>
+            </select>
+          </div>
+
+          <div class="campo">
+            <label for="incluirSom">Som</label>
+            <select id="incluirSom">
+              <option value="nao">Não incluir</option>
+              <option value="sim">Incluir som de frente (+ R$ 600,00)</option>
+            </select>
+          </div>
+
+          <div class="campo">
+            <label for="incluirNF">Incluir NF (8%)</label>
+            <select id="incluirNF">
+              <option value="nao">Sem NF</option>
+              <option value="sim">Com NF 8%</option>
+            </select>
+          </div>
+
+          <div class="campo hidden" id="campoVanManualWrap">
+            <label for="valorVanManual">Valor da van manual/orçada (R$)</label>
+            <input type="text" id="valorVanManual" placeholder="Ex.: 1200,00" />
+          </div>
+
+          <div class="campo">
+            <label for="pedagioAdicional">Pedágio adicional (R$)</label>
+            <input type="text" id="pedagioAdicional" value="0" placeholder="Ex.: 80,00" />
+          </div>
+
+          <div class="campo">
+            <label for="hospedagemAdicional">Hospedagem adicional (R$)</label>
+            <input type="text" id="hospedagemAdicional" value="0" placeholder="Ex.: 350,00" />
+          </div>
+
+          <div class="campo">
+            <label for="alimentacaoAdicional">Alimentação adicional (R$)</label>
+            <input type="text" id="alimentacaoAdicional" value="0" placeholder="Ex.: 120,00" />
+          </div>
+        </div>
+      </div>
+
+      <div class="acoes">
+        <button class="btn-primary" id="btnCalcular">Calcular</button>
+        <button class="btn-secondary" id="btnLimpar" type="button">Limpar</button>
+        <button class="btn-copy hidden" id="btnCopiarWhatsapp" type="button">Copiar WhatsApp</button>
+        <button class="btn-copy-orcamento hidden" id="btnCopiarOrcamento" type="button">Copiar orçamento</button>
+        <button class="btn-copy-tech hidden" id="btnCopiarTecnico" type="button">Copiar técnico</button>
+      </div>
+
+      <div class="erro" id="erroBox"></div>
+      <div class="info" id="infoBox"></div>
+      <div class="ok" id="okBox"></div>
+    </div>
+
+    <div class="card hidden" id="resumoCard">
+      <h2>Resumo</h2>
+      <div class="resumo-grid" id="resumoGrid"></div>
+    </div>
+
+    <div class="card hidden" id="resultadosCard">
+      <h2>Resultados</h2>
+      <div id="resultadoDetalhado" class="hidden"></div>
+      <div id="tabelasContainer"></div>
+      <div class="rodape-nota hidden" id="rodapeMinimo">* aplicado valor mínimo</div>
+    </div>
+  </div>
+
+  <script>
+    const CONFIG = {
+      horasShowPadrao: 2,
+      horasMontagem: 1,
+      percentualNF: 0.08,
+      somFrente: {
+        valor: 600,
+        descricao: "Estrutura de som de frente (PA com sub 18pol e 2 caixas para médios/agudos, para público não muito grande, até 150 pessoas, atende bem)"
+      },
+      custoKm: {
+        proprio: 1.9,
+        van: 5.0
+      },
+      hh: {
+        diurno: {
+          "Bar promo": 45.0,
+          "Padrão": 49.5,
+          "Particular": 58.5,
+          "Pref. distante": 63.0,
+          "Prefeitura local": 85.5
+        },
+        noturno: {
+          "Bar promo": 58.5,
+          "Padrão": 64.35,
+          "Particular": 76.05,
+          "Pref. distante": 81.9,
+          "Prefeitura local": 85.5
+        }
+      },
+      minimos: {
+        6: {
+          "Bar promo": 1500.0,
+          "Padrão": 1800.0,
+          "Particular": 2100.0,
+          "Pref. distante": 2500.0,
+          "Prefeitura local": 2350.0
+        },
+        7: {
+          "Bar promo": 1750.0,
+          "Padrão": 2100.0,
+          "Particular": 2450.0,
+          "Pref. distante": 2950.0,
+          "Prefeitura local": 2750.0
+        }
+      },
+      tabelas: [
+        { titulo: "Tabela – Diurno (Veículo Próprio)", periodo: "diurno", transporte: "proprio" },
+        { titulo: "Tabela – Diurno (Van)", periodo: "diurno", transporte: "van" },
+        { titulo: "Tabela – Noturno (Veículo Próprio)", periodo: "noturno", transporte: "proprio" },
+        { titulo: "Tabela – Noturno (Van)", periodo: "noturno", transporte: "van" }
+      ],
+      eventos: [
+        "Bar promo",
+        "Padrão",
+        "Particular",
+        "Pref. distante",
+        "Prefeitura local"
+      ]
+    };
+
+    const distanciaInput = document.getElementById("distancia");
+    const tempoInput = document.getElementById("tempo");
+    const modoExibicaoSelect = document.getElementById("modoExibicao");
+    const filtrosDetalhados = document.getElementById("filtrosDetalhados");
+    const periodoBaseSelect = document.getElementById("periodoBase");
+    const tempoShowDetalhadoInput = document.getElementById("tempoShowDetalhado");
+    const numMusicosSelect = document.getElementById("numMusicos");
+    const tipoEventoSelect = document.getElementById("tipoEvento");
+    const cidadeDestinoInput = document.getElementById("cidadeDestino");
+    const nomeSolicitanteInput = document.getElementById("nomeSolicitante");
+    const tipoTransporteDetalhadoSelect = document.getElementById("tipoTransporteDetalhado");
+    const incluirSomSelect = document.getElementById("incluirSom");
+    const incluirNFSelect = document.getElementById("incluirNF");
+    const campoVanManualWrap = document.getElementById("campoVanManualWrap");
+    const valorVanManualInput = document.getElementById("valorVanManual");
+    const pedagioAdicionalInput = document.getElementById("pedagioAdicional");
+    const hospedagemAdicionalInput = document.getElementById("hospedagemAdicional");
+    const alimentacaoAdicionalInput = document.getElementById("alimentacaoAdicional");
+
+    const btnCalcular = document.getElementById("btnCalcular");
+    const btnLimpar = document.getElementById("btnLimpar");
+    const btnCopiarWhatsapp = document.getElementById("btnCopiarWhatsapp");
+    const btnCopiarOrcamento = document.getElementById("btnCopiarOrcamento");
+    const btnCopiarTecnico = document.getElementById("btnCopiarTecnico");
+
+    const erroBox = document.getElementById("erroBox");
+    const infoBox = document.getElementById("infoBox");
+    const okBox = document.getElementById("okBox");
+    const resumoCard = document.getElementById("resumoCard");
+    const resumoGrid = document.getElementById("resumoGrid");
+    const resultadosCard = document.getElementById("resultadosCard");
+    const tabelasContainer = document.getElementById("tabelasContainer");
+    const resultadoDetalhado = document.getElementById("resultadoDetalhado");
+    const rodapeMinimo = document.getElementById("rodapeMinimo");
+
+    let ultimoTextoCopiarWhatsapp = "";
+    let ultimoTextoCopiarOrcamento = "";
+    let ultimoTextoCopiarTecnico = "";
+
+    function normalizarNumero(valor) {
+      if (typeof valor !== "string") return NaN;
+      let limpo = valor.trim();
+      if (!limpo) return NaN;
+
+      limpo = limpo.replace(/\s+/g, "");
+
+      if (limpo.includes(",") && limpo.includes(".")) {
+        limpo = limpo.replace(/\./g, "").replace(",", ".");
+      } else if (limpo.includes(",")) {
+        limpo = limpo.replace(",", ".");
+      }
+
+      const numero = Number(limpo);
+      return Number.isFinite(numero) ? numero : NaN;
+    }
+
+    function formatarNumeroBR(valor) {
+      return valor.toLocaleString("pt-BR", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+    }
+
+    function formatarMoeda(valor) {
+      return valor.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+      });
+    }
+
+    function arredondarParaCima50(valor) {
+      return Math.ceil(valor / 50) * 50;
+    }
+
+    function exibirErro(msg) {
+      erroBox.textContent = msg;
+      erroBox.style.display = "block";
+    }
+
+    function ocultarErro() {
+      erroBox.style.display = "none";
+      erroBox.textContent = "";
+    }
+
+    function exibirInfo(msg) {
+      infoBox.innerHTML = msg;
+      infoBox.style.display = "block";
+    }
+
+    function ocultarInfo() {
+      infoBox.style.display = "none";
+      infoBox.innerHTML = "";
+    }
+
+    function exibirOk(msg) {
+      okBox.textContent = msg;
+      okBox.style.display = "block";
+      setTimeout(() => {
+        okBox.style.display = "none";
+        okBox.textContent = "";
+      }, 2500);
+    }
+
+    function nomePeriodo(periodo) {
+      return periodo === "noturno" ? "Noturno" : "Diurno";
+    }
+
+    function obterRecomendacaoTransporte(periodo, distanciaTotal) {
+      if (periodo === "noturno") {
+        return distanciaTotal > 75 ? "van" : "proprio";
+      }
+      return distanciaTotal > 150 ? "van" : "proprio";
+    }
+
+    function nomeTransporte(tipo) {
+      if (tipo === "proprio") return "veículo próprio";
+      if (tipo === "van") return "van calculada";
+      if (tipo === "van_manual") return "van manual/orçada";
+      if (tipo === "comparar") return "comparativo";
+      return tipo;
+    }
+
+    function atualizarRodapeMinimo() {
+      const temMinimo =
+        tabelasContainer.innerHTML.includes('class="tag-minimo"') ||
+        resultadoDetalhado.innerHTML.includes('class="tag-minimo"');
+
+      if (temMinimo) {
+        rodapeMinimo.classList.remove("hidden");
+      } else {
+        rodapeMinimo.classList.add("hidden");
+      }
+    }
+
+    function montarListaExclusoes({ incluirSom, resultado }) {
+      const exclusoes = [];
+
+      if (!incluirSom) exclusoes.push("- Som de frente");
+      if (resultado.pedagio <= 0) exclusoes.push("- Pedágios");
+      if (resultado.hospedagem <= 0) exclusoes.push("- Hospedagem");
+      if (resultado.alimentacao <= 0) exclusoes.push("- Alimentação");
+      if (!resultado.incluirNF) exclusoes.push("- Emissão de nota fiscal");
+
+      exclusoes.push("- Despesas extras não previstas");
+      exclusoes.push("- Horas excedentes ou alterações relevantes de horário/logística após fechamento");
+      exclusoes.push("- Estruturas e serviços não descritos neste orçamento");
+
+      return exclusoes;
+    }
+
+    function calcularLinha({
+      evento,
+      periodo,
+      transporte,
+      numMusicos,
+      horasTotais,
+      distanciaTotal,
+      valorVanManual = null,
+      incluirSom = false,
+      incluirNF = false,
+      pedagio = 0,
+      hospedagem = 0,
+      alimentacao = 0
+    }) {
+      const hh = CONFIG.hh[periodo][evento];
+      const maoDeObra = numMusicos * hh * horasTotais;
+
+      let transporteValor = 0;
+      if (transporte === "proprio") {
+        transporteValor = distanciaTotal * CONFIG.custoKm.proprio;
+      } else if (transporte === "van") {
+        transporteValor = distanciaTotal * CONFIG.custoKm.van;
+      } else if (transporte === "van_manual") {
+        transporteValor = valorVanManual;
+      }
+
+      const somValor = incluirSom ? CONFIG.somFrente.valor : 0;
+      const adicionaisValor = pedagio + hospedagem + alimentacao;
+
+      const totalCalculado = maoDeObra + transporteValor + somValor + adicionaisValor;
+      const minimo = CONFIG.minimos[numMusicos][evento];
+      const minimoAplicado = totalCalculado < minimo;
+      const totalBase = minimoAplicado ? minimo : totalCalculado;
+      const totalBaseArredondado = arredondarParaCima50(totalBase);
+
+      const impostosNF = incluirNF ? (totalBaseArredondado * CONFIG.percentualNF) : 0;
+      const totalFinalComNF = totalBaseArredondado + impostosNF;
+
+      return {
+        evento,
+        maoDeObra,
+        transporte: transporteValor,
+        som: somValor,
+        pedagio,
+        hospedagem,
+        alimentacao,
+        adicionais: adicionaisValor,
+        totalCalculado,
+        minimo,
+        minimoAplicado,
+        totalBaseArredondado,
+        incluirNF,
+        impostosNF,
+        totalFinal: totalFinalComNF
+      };
+    }
+
+    function gerarResumo(dados) {
+      const modoExibicao = modoExibicaoSelect.value;
+
+      const itens = [
+        { label: "Distância de ida (km)", valor: formatarNumeroBR(dados.distanciaIda) },
+        { label: "Tempo de ida (h)", valor: formatarNumeroBR(dados.tempoIda) },
+        { label: "Distância total (km)", valor: formatarNumeroBR(dados.distanciaTotal) },
+        { label: "Tempo total deslocamento (h)", valor: formatarNumeroBR(dados.tempoTotalDeslocamento) },
+        { label: "Horas totais de mão de obra", valor: formatarNumeroBR(dados.horasTotaisMaoDeObra) }
+      ];
+
+      if (modoExibicao === "detalhado") {
+        itens.splice(2, 0,
+          { label: "Período", valor: nomePeriodo(dados.periodoBase) },
+          { label: "Tempo de show (h)", valor: formatarNumeroBR(dados.horasShow) }
+        );
+      }
+
+      resumoGrid.innerHTML = itens.map(item => `
+        <div class="resumo-item">
+          <div class="label">${item.label}</div>
+          <div class="valor">${item.valor}</div>
+        </div>
+      `).join("");
+    }
+
+    function montarTabela(tabelaConfig, dadosBase) {
+      const bloco = document.createElement("div");
+      bloco.className = "tabela-bloco";
+
+      const titulo = document.createElement("h3");
+      titulo.textContent = tabelaConfig.titulo;
+      bloco.appendChild(titulo);
+
+      const wrap = document.createElement("div");
+      wrap.className = "tabela-wrap";
+
+      const table = document.createElement("table");
+
+      let html = `
+        <thead>
+          <tr>
+            <th>Tipo de evento</th>
+            <th>Mão de obra</th>
+            <th>Transporte</th>
+            <th>Total geral</th>
+          </tr>
+        </thead>
+        <tbody>
+      `;
+
+      [6, 7].forEach(numMusicos => {
+        html += `
+          <tr class="grupo">
+            <td colspan="4">${numMusicos} músicos</td>
+          </tr>
+        `;
+
+        CONFIG.eventos.forEach(evento => {
+          const resultado = calcularLinha({
+            evento,
+            periodo: tabelaConfig.periodo,
+            transporte: tabelaConfig.transporte,
+            numMusicos,
+            horasTotais: dadosBase.horasTotaisMaoDeObra,
+            distanciaTotal: dadosBase.distanciaTotal
+          });
+
+          html += `
+            <tr>
+              <td>${resultado.evento}</td>
+              <td>${formatarMoeda(resultado.maoDeObra)}</td>
+              <td>${formatarMoeda(resultado.transporte)}</td>
+              <td>${formatarMoeda(resultado.totalBaseArredondado)} ${resultado.minimoAplicado ? '<span class="tag-minimo">*</span>' : ''}</td>
+            </tr>
+          `;
+        });
+      });
+
+      html += `</tbody>`;
+      table.innerHTML = html;
+
+      wrap.appendChild(table);
+      bloco.appendChild(wrap);
+
+      const obs = document.createElement("div");
+      obs.className = "observacao";
+      obs.textContent = "Total geral arredondado para cima em múltiplos de R$ 50,00.";
+      bloco.appendChild(obs);
+
+      return bloco;
+    }
+
+    function montarCardDetalhado({ titulo, subtitulo, resultado, transporteTexto, incluirSom }) {
+      return `
+        <div class="detalhado-card">
+          <h3>${titulo}</h3>
+          <div class="observacao">${subtitulo}</div>
+
+          <div class="detalhado-linha">
+            <div class="titulo">Mão de obra</div>
+            <div class="valor">${formatarMoeda(resultado.maoDeObra)}</div>
+          </div>
+
+          <div class="detalhado-linha">
+            <div class="titulo">Transporte (${transporteTexto})</div>
+            <div class="valor">${formatarMoeda(resultado.transporte)}</div>
+          </div>
+
+          ${incluirSom ? `
+          <div class="detalhado-linha">
+            <div class="titulo">Som de frente</div>
+            <div class="valor">${formatarMoeda(resultado.som)}</div>
+          </div>
+          <div class="observacao">${CONFIG.somFrente.descricao}</div>
+          ` : ""}
+
+          ${resultado.pedagio > 0 ? `
+          <div class="detalhado-linha">
+            <div class="titulo">Pedágio adicional</div>
+            <div class="valor">${formatarMoeda(resultado.pedagio)}</div>
+          </div>
+          ` : ""}
+
+          ${resultado.hospedagem > 0 ? `
+          <div class="detalhado-linha">
+            <div class="titulo">Hospedagem adicional</div>
+            <div class="valor">${formatarMoeda(resultado.hospedagem)}</div>
+          </div>
+          ` : ""}
+
+          ${resultado.alimentacao > 0 ? `
+          <div class="detalhado-linha">
+            <div class="titulo">Alimentação adicional</div>
+            <div class="valor">${formatarMoeda(resultado.alimentacao)}</div>
+          </div>
+          ` : ""}
+
+          <div class="detalhado-linha">
+            <div class="titulo">Total base</div>
+            <div class="valor">${formatarMoeda(resultado.totalBaseArredondado)} ${resultado.minimoAplicado ? '<span class="tag-minimo">*</span>' : ''}</div>
+          </div>
+
+          ${resultado.incluirNF ? `
+          <div class="detalhado-linha">
+            <div class="titulo">Impostos NF (8%)</div>
+            <div class="valor">${formatarMoeda(resultado.impostosNF)}</div>
+          </div>
+          ` : ""}
+
+          <div class="detalhado-linha">
+            <div class="titulo">Total final${resultado.incluirNF ? " com NF" : ""}</div>
+            <div class="valor destaque-total">${formatarMoeda(resultado.totalFinal)}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function montarTextoWhatsappResumo({
+      periodo,
+      numMusicos,
+      evento,
+      dadosBase,
+      resultado,
+      incluirSom,
+      transporteTexto
+    }) {
+      const obsContratante =
+        dadosBase.horasTotaisMaoDeObra > 6
+          ? "_Para tempo total superior a 6h, deverá ser fornecida alimentação pelo contratante._"
+          : "";
+
+      return [
+        `*TRINITY PREÇOS*`,
+        ``,
+        `*${evento} • ${nomePeriodo(periodo)} • ${numMusicos} músicos*`,
+        ``,
+        `💰 *Valor final${resultado.incluirNF ? " com NF" : ""}: ${formatarMoeda(resultado.totalFinal)}*`,
+        ``,
+        `*Incluso no valor:*`,
+        `• Mão de obra: ${formatarMoeda(resultado.maoDeObra)}`,
+        `• Transporte (${transporteTexto}): ${formatarMoeda(resultado.transporte)}`,
+        incluirSom ? `• Som de frente: ${formatarMoeda(resultado.som)}` : "",
+        resultado.pedagio > 0 ? `• Pedágio: ${formatarMoeda(resultado.pedagio)}` : "",
+        resultado.hospedagem > 0 ? `• Hospedagem: ${formatarMoeda(resultado.hospedagem)}` : "",
+        resultado.alimentacao > 0 ? `• Alimentação: ${formatarMoeda(resultado.alimentacao)}` : "",
+        ``,
+        `*Base do orçamento:* ${formatarMoeda(resultado.totalBaseArredondado)}${resultado.minimoAplicado ? " *" : ""}`,
+        resultado.incluirNF ? `*Impostos NF (8%):* ${formatarMoeda(resultado.impostosNF)}` : "",
+        ``,
+        `*Dados base:*`,
+        `• Distância ida: ${formatarNumeroBR(dadosBase.distanciaIda)} km`,
+        `• Tempo ida: ${formatarNumeroBR(dadosBase.tempoIda)} h`,
+        `• Tempo de show: ${formatarNumeroBR(dadosBase.horasShow)} h`,
+        resultado.minimoAplicado ? `_Valor com aplicação de mínimo._` : "",
+        obsContratante
+      ].filter(Boolean).join("\n");
+    }
+
+    function montarTextoWhatsappComparativo({
+      periodo,
+      numMusicos,
+      evento,
+      dadosBase,
+      resultadoProprio,
+      resultadoVan
+    }) {
+      const obsContratante =
+        dadosBase.horasTotaisMaoDeObra > 6
+          ? "_Para tempo total superior a 6h, deverá ser fornecida alimentação pelo contratante._"
+          : "";
+
+      return [
+        `*TRINITY PREÇOS*`,
+        ``,
+        `*${evento} • ${nomePeriodo(periodo)} • ${numMusicos} músicos*`,
+        ``,
+        `*Comparativo de transporte*`,
+        ``,
+        `🚗 *Veículo próprio*`,
+        `• Base: ${formatarMoeda(resultadoProprio.totalBaseArredondado)}${resultadoProprio.minimoAplicado ? " *" : ""}`,
+        resultadoProprio.incluirNF ? `• Impostos NF (8%): ${formatarMoeda(resultadoProprio.impostosNF)}` : "",
+        `• Total final${resultadoProprio.incluirNF ? " com NF" : ""}: ${formatarMoeda(resultadoProprio.totalFinal)}`,
+        ``,
+        `🚐 *Van calculada*`,
+        `• Base: ${formatarMoeda(resultadoVan.totalBaseArredondado)}${resultadoVan.minimoAplicado ? " *" : ""}`,
+        resultadoVan.incluirNF ? `• Impostos NF (8%): ${formatarMoeda(resultadoVan.impostosNF)}` : "",
+        `• Total final${resultadoVan.incluirNF ? " com NF" : ""}: ${formatarMoeda(resultadoVan.totalFinal)}`,
+        ``,
+        `*Dados base:*`,
+        `• Distância ida: ${formatarNumeroBR(dadosBase.distanciaIda)} km`,
+        `• Tempo ida: ${formatarNumeroBR(dadosBase.tempoIda)} h`,
+        `• Tempo de show: ${formatarNumeroBR(dadosBase.horasShow)} h`,
+        (resultadoProprio.minimoAplicado || resultadoVan.minimoAplicado) ? `_Valor com aplicação de mínimo em cenário indicado com *._` : "",
+        obsContratante
+      ].filter(Boolean).join("\n");
+    }
+
+    function montarTextoOrcamento({
+      periodo,
+      numMusicos,
+      evento,
+      dadosBase,
+      resultado,
+      incluirSom,
+      transporteTexto,
+      cidadeDestino,
+      nomeSolicitante
+    }) {
+      const obsContratante =
+        dadosBase.horasTotaisMaoDeObra > 6
+          ? "- Para tempo total superior a 6h, deverá ser fornecida alimentação pelo contratante"
+          : "";
+
+      const exclusoes = montarListaExclusoes({ incluirSom, resultado });
+
+      return [
+        `*📋 ORÇAMENTO TRINITY*`,
+        ``,
+        `*➡️ SERVIÇO:* SHOW${cidadeDestino ? ` EM ${cidadeDestino.toUpperCase()}` : ""}`,
+        ``,
+        `👥 Formação: ${numMusicos} músicos`,
+        `🎤 Evento: ${evento}`,
+        `🌙 Período: ${nomePeriodo(periodo)}`,
+        nomeSolicitante ? `👤 Solicitante: ${nomeSolicitante}` : "",
+        cidadeDestino ? `📍 Destino: ${cidadeDestino}` : "",
+        ``,
+        `---`,
+        ``,
+        `*🚐 LOGÍSTICA DO SERVIÇO*`,
+        ``,
+        `- Distância aproximada: ${formatarNumeroBR(dadosBase.distanciaIda)} km (ida) / ${formatarNumeroBR(dadosBase.distanciaTotal)} km (ida e volta)`,
+        `- Tempo de deslocamento de ida: ${formatarNumeroBR(dadosBase.tempoIda)} h`,
+        `- Tempo total de deslocamento: ${formatarNumeroBR(dadosBase.tempoTotalDeslocamento)} h`,
+        `- Duração do show: ${formatarNumeroBR(dadosBase.horasShow)} h`,
+        `- Montagem/desmontagem: ${formatarNumeroBR(CONFIG.horasMontagem)} h`,
+        `- Tempo total de mão de obra: ${formatarNumeroBR(dadosBase.horasTotaisMaoDeObra)} h`,
+        ``,
+        `---`,
+        ``,
+        `*🚐 ESTRUTURA / INCLUSÕES*`,
+        ``,
+        `- Transporte: ${transporteTexto}`,
+        incluirSom ? `- Som de frente incluso` : "",
+        incluirSom ? `- ${CONFIG.somFrente.descricao}` : "",
+        resultado.pedagio > 0 ? `- Pedágio adicional incluso` : "",
+        resultado.hospedagem > 0 ? `- Hospedagem adicional inclusa` : "",
+        resultado.alimentacao > 0 ? `- Alimentação adicional inclusa` : "",
+        resultado.incluirNF ? `- Emissão de nota fiscal inclusa` : "",
+        ``,
+        `---`,
+        ``,
+        `*💰 INVESTIMENTO*`,
+        ``,
+        `- Mão de obra: ${formatarMoeda(resultado.maoDeObra)}`,
+        `- Transporte: ${formatarMoeda(resultado.transporte)}`,
+        incluirSom ? `- Som: ${formatarMoeda(resultado.som)}` : "",
+        resultado.pedagio > 0 ? `- Pedágio: ${formatarMoeda(resultado.pedagio)}` : "",
+        resultado.hospedagem > 0 ? `- Hospedagem: ${formatarMoeda(resultado.hospedagem)}` : "",
+        resultado.alimentacao > 0 ? `- Alimentação: ${formatarMoeda(resultado.alimentacao)}` : "",
+        `- Total base: ${formatarMoeda(resultado.totalBaseArredondado)}${resultado.minimoAplicado ? " *" : ""}`,
+        resultado.incluirNF ? `- Impostos NF (8%): ${formatarMoeda(resultado.impostosNF)}` : "",
+        ``,
+        `*Valor final${resultado.incluirNF ? " com NF" : ""}: ${formatarMoeda(resultado.totalFinal)}*`,
+        ``,
+        `---`,
+        ``,
+        `*❌ EXCLUSÕES*`,
+        ``,
+        ...exclusoes,
+        ``,
+        `---`,
+        ``,
+        `*⚠️ OBSERVAÇÕES*`,
+        ``,
+        resultado.minimoAplicado ? `- * aplicado valor mínimo` : "",
+        obsContratante
+      ].filter(Boolean).join("\n");
+    }
+
+    function montarTextoOrcamentoComparativo({
+      periodo,
+      numMusicos,
+      evento,
+      dadosBase,
+      resultadoProprio,
+      resultadoVan,
+      cidadeDestino,
+      nomeSolicitante
+    }) {
+      const obsContratante =
+        dadosBase.horasTotaisMaoDeObra > 6
+          ? "- Para tempo total superior a 6h, deverá ser fornecida alimentação pelo contratante"
+          : "";
+
+      const exclusoes = montarListaExclusoes({
+        incluirSom: resultadoProprio.som > 0,
+        resultado: resultadoProprio
+      });
+
+      return [
+        `*📋 ORÇAMENTO TRINITY*`,
+        ``,
+        `*➡️ SERVIÇO:* SHOW${cidadeDestino ? ` EM ${cidadeDestino.toUpperCase()}` : ""}`,
+        ``,
+        `👥 Formação: ${numMusicos} músicos`,
+        `🎤 Evento: ${evento}`,
+        `🌙 Período: ${nomePeriodo(periodo)}`,
+        nomeSolicitante ? `👤 Solicitante: ${nomeSolicitante}` : "",
+        cidadeDestino ? `📍 Destino: ${cidadeDestino}` : "",
+        ``,
+        `---`,
+        ``,
+        `*🚐 LOGÍSTICA DO SERVIÇO*`,
+        ``,
+        `- Distância aproximada: ${formatarNumeroBR(dadosBase.distanciaIda)} km (ida) / ${formatarNumeroBR(dadosBase.distanciaTotal)} km (ida e volta)`,
+        `- Tempo de deslocamento de ida: ${formatarNumeroBR(dadosBase.tempoIda)} h`,
+        `- Tempo total de deslocamento: ${formatarNumeroBR(dadosBase.tempoTotalDeslocamento)} h`,
+        `- Duração do show: ${formatarNumeroBR(dadosBase.horasShow)} h`,
+        `- Montagem/desmontagem: ${formatarNumeroBR(CONFIG.horasMontagem)} h`,
+        `- Tempo total de mão de obra: ${formatarNumeroBR(dadosBase.horasTotaisMaoDeObra)} h`,
+        ``,
+        `---`,
+        ``,
+        `*💰 INVESTIMENTO*`,
+        ``,
+        `🚗 *Veículo próprio*`,
+        `- Total base: ${formatarMoeda(resultadoProprio.totalBaseArredondado)}${resultadoProprio.minimoAplicado ? " *" : ""}`,
+        resultadoProprio.incluirNF ? `- Impostos NF (8%): ${formatarMoeda(resultadoProprio.impostosNF)}` : "",
+        `- Valor final${resultadoProprio.incluirNF ? " com NF" : ""}: ${formatarMoeda(resultadoProprio.totalFinal)}`,
+        ``,
+        `🚐 *Van calculada*`,
+        `- Total base: ${formatarMoeda(resultadoVan.totalBaseArredondado)}${resultadoVan.minimoAplicado ? " *" : ""}`,
+        resultadoVan.incluirNF ? `- Impostos NF (8%): ${formatarMoeda(resultadoVan.impostosNF)}` : "",
+        `- Valor final${resultadoVan.incluirNF ? " com NF" : ""}: ${formatarMoeda(resultadoVan.totalFinal)}`,
+        ``,
+        `---`,
+        ``,
+        `*❌ EXCLUSÕES*`,
+        ``,
+        ...exclusoes,
+        ``,
+        `---`,
+        ``,
+        `*⚠️ OBSERVAÇÕES*`,
+        ``,
+        (resultadoProprio.minimoAplicado || resultadoVan.minimoAplicado) ? `- * aplicado valor mínimo` : "",
+        obsContratante
+      ].filter(Boolean).join("\n");
+    }
+
+    function montarTextoTecnicoUnico({
+      periodo,
+      numMusicos,
+      evento,
+      transporteTexto,
+      dadosBase,
+      resultado,
+      incluirSom
+    }) {
+      const obsContratante =
+        dadosBase.horasTotaisMaoDeObra > 6
+          ? "Observação: para tempo total superior a 6h, deverá ser fornecida alimentação pelo contratante."
+          : "";
+
+      return [
+        `TRINITY PREÇOS`,
+        ``,
+        `${nomePeriodo(periodo)} • ${numMusicos} músicos • ${evento}`,
+        ``,
+        `Dados do cálculo`,
+        `• Distância de ida: ${formatarNumeroBR(dadosBase.distanciaIda)} km`,
+        `• Tempo de ida: ${formatarNumeroBR(dadosBase.tempoIda)} h`,
+        `• Tempo de show: ${formatarNumeroBR(dadosBase.horasShow)} h`,
+        `• Distância total: ${formatarNumeroBR(dadosBase.distanciaTotal)} km`,
+        `• Tempo total deslocamento: ${formatarNumeroBR(dadosBase.tempoTotalDeslocamento)} h`,
+        `• Horas totais de mão de obra: ${formatarNumeroBR(dadosBase.horasTotaisMaoDeObra)} h`,
+        ``,
+        `Composição do valor`,
+        `• Mão de obra: ${formatarMoeda(resultado.maoDeObra)}`,
+        `• Transporte (${transporteTexto}): ${formatarMoeda(resultado.transporte)}`,
+        incluirSom ? `• Som de frente: ${formatarMoeda(resultado.som)}` : "",
+        incluirSom ? `• Descrição do som: ${CONFIG.somFrente.descricao}` : "",
+        resultado.pedagio > 0 ? `• Pedágio adicional: ${formatarMoeda(resultado.pedagio)}` : "",
+        resultado.hospedagem > 0 ? `• Hospedagem adicional: ${formatarMoeda(resultado.hospedagem)}` : "",
+        resultado.alimentacao > 0 ? `• Alimentação adicional: ${formatarMoeda(resultado.alimentacao)}` : "",
+        `• Total base: ${formatarMoeda(resultado.totalBaseArredondado)}${resultado.minimoAplicado ? " *" : ""}`,
+        resultado.incluirNF ? `• Impostos NF (8%): ${formatarMoeda(resultado.impostosNF)}` : "",
+        `• Total final${resultado.incluirNF ? " com NF" : ""}: ${formatarMoeda(resultado.totalFinal)}`,
+        resultado.minimoAplicado ? `* aplicado valor mínimo` : "",
+        obsContratante
+      ].filter(Boolean).join("\n");
+    }
+
+    function montarTextoTecnicoComparativo({
+      periodo,
+      numMusicos,
+      evento,
+      dadosBase,
+      resultadoProprio,
+      resultadoVan,
+      incluirSom
+    }) {
+      const obsContratante =
+        dadosBase.horasTotaisMaoDeObra > 6
+          ? "Observação: para tempo total superior a 6h, deverá ser fornecida alimentação pelo contratante."
+          : "";
+
+      return [
+        `TRINITY PREÇOS`,
+        ``,
+        `${nomePeriodo(periodo)} • ${numMusicos} músicos • ${evento}`,
+        ``,
+        `Dados do cálculo`,
+        `• Distância de ida: ${formatarNumeroBR(dadosBase.distanciaIda)} km`,
+        `• Tempo de ida: ${formatarNumeroBR(dadosBase.tempoIda)} h`,
+        `• Tempo de show: ${formatarNumeroBR(dadosBase.horasShow)} h`,
+        `• Distância total: ${formatarNumeroBR(dadosBase.distanciaTotal)} km`,
+        `• Tempo total deslocamento: ${formatarNumeroBR(dadosBase.tempoTotalDeslocamento)} h`,
+        `• Horas totais de mão de obra: ${formatarNumeroBR(dadosBase.horasTotaisMaoDeObra)} h`,
+        ``,
+        `Veículo próprio`,
+        `• Mão de obra: ${formatarMoeda(resultadoProprio.maoDeObra)}`,
+        `• Transporte: ${formatarMoeda(resultadoProprio.transporte)}`,
+        incluirSom ? `• Som de frente: ${formatarMoeda(resultadoProprio.som)}` : "",
+        resultadoProprio.pedagio > 0 ? `• Pedágio adicional: ${formatarMoeda(resultadoProprio.pedagio)}` : "",
+        resultadoProprio.hospedagem > 0 ? `• Hospedagem adicional: ${formatarMoeda(resultadoProprio.hospedagem)}` : "",
+        resultadoProprio.alimentacao > 0 ? `• Alimentação adicional: ${formatarMoeda(resultadoProprio.alimentacao)}` : "",
+        `• Total base: ${formatarMoeda(resultadoProprio.totalBaseArredondado)}${resultadoProprio.minimoAplicado ? " *" : ""}`,
+        resultadoProprio.incluirNF ? `• Impostos NF (8%): ${formatarMoeda(resultadoProprio.impostosNF)}` : "",
+        `• Total final${resultadoProprio.incluirNF ? " com NF" : ""}: ${formatarMoeda(resultadoProprio.totalFinal)}`,
+        ``,
+        `Van calculada`,
+        `• Mão de obra: ${formatarMoeda(resultadoVan.maoDeObra)}`,
+        `• Transporte: ${formatarMoeda(resultadoVan.transporte)}`,
+        incluirSom ? `• Som de frente: ${formatarMoeda(resultadoVan.som)}` : "",
+        resultadoVan.pedagio > 0 ? `• Pedágio adicional: ${formatarMoeda(resultadoVan.pedagio)}` : "",
+        resultadoVan.hospedagem > 0 ? `• Hospedagem adicional: ${formatarMoeda(resultadoVan.hospedagem)}` : "",
+        resultadoVan.alimentacao > 0 ? `• Alimentação adicional: ${formatarMoeda(resultadoVan.alimentacao)}` : "",
+        `• Total base: ${formatarMoeda(resultadoVan.totalBaseArredondado)}${resultadoVan.minimoAplicado ? " *" : ""}`,
+        resultadoVan.incluirNF ? `• Impostos NF (8%): ${formatarMoeda(resultadoVan.impostosNF)}` : "",
+        `• Total final${resultadoVan.incluirNF ? " com NF" : ""}: ${formatarMoeda(resultadoVan.totalFinal)}`,
+        (resultadoProprio.minimoAplicado || resultadoVan.minimoAplicado) ? `* aplicado valor mínimo` : "",
+        obsContratante
+      ].filter(Boolean).join("\n");
+    }
+
+    function renderizarModoCompleto(dadosBase) {
+      ultimoTextoCopiarWhatsapp = "";
+      ultimoTextoCopiarOrcamento = "";
+      ultimoTextoCopiarTecnico = "";
+      btnCopiarWhatsapp.classList.add("hidden");
+      btnCopiarOrcamento.classList.add("hidden");
+      btnCopiarTecnico.classList.add("hidden");
+      resultadoDetalhado.classList.add("hidden");
+      resultadoDetalhado.innerHTML = "";
+      tabelasContainer.innerHTML = "";
+
+      CONFIG.tabelas.forEach(tabelaConfig => {
+        const tabela = montarTabela(tabelaConfig, dadosBase);
+        tabelasContainer.appendChild(tabela);
+      });
+
+      atualizarRodapeMinimo();
+    }
+
+    function renderizarModoDetalhado(dadosBase) {
+      const periodo = periodoBaseSelect.value;
+      const numMusicos = Number(numMusicosSelect.value);
+      const evento = tipoEventoSelect.value;
+      const cidadeDestino = cidadeDestinoInput.value.trim();
+      const nomeSolicitante = nomeSolicitanteInput.value.trim();
+      const tipoTransporte = tipoTransporteDetalhadoSelect.value;
+      const incluirSom = incluirSomSelect.value === "sim";
+      const incluirNF = incluirNFSelect.value === "sim";
+      const recomendacao = obterRecomendacaoTransporte(periodo, dadosBase.distanciaTotal);
+
+      const pedagio = normalizarNumero(pedagioAdicionalInput.value);
+      const hospedagem = normalizarNumero(hospedagemAdicionalInput.value);
+      const alimentacao = normalizarNumero(alimentacaoAdicionalInput.value);
+
+      if (!Number.isFinite(pedagio) || pedagio < 0) {
+        exibirErro("Informe um valor válido para pedágio adicional.");
+        btnCopiarWhatsapp.classList.add("hidden");
+        btnCopiarOrcamento.classList.add("hidden");
+        btnCopiarTecnico.classList.add("hidden");
+        return false;
+      }
+
+      if (!Number.isFinite(hospedagem) || hospedagem < 0) {
+        exibirErro("Informe um valor válido para hospedagem adicional.");
+        btnCopiarWhatsapp.classList.add("hidden");
+        btnCopiarOrcamento.classList.add("hidden");
+        btnCopiarTecnico.classList.add("hidden");
+        return false;
+      }
+
+      if (!Number.isFinite(alimentacao) || alimentacao < 0) {
+        exibirErro("Informe um valor válido para alimentação adicional.");
+        btnCopiarWhatsapp.classList.add("hidden");
+        btnCopiarOrcamento.classList.add("hidden");
+        btnCopiarTecnico.classList.add("hidden");
+        return false;
+      }
+
+      tabelasContainer.innerHTML = "";
+      resultadoDetalhado.innerHTML = "";
+      resultadoDetalhado.classList.remove("hidden");
+      btnCopiarWhatsapp.classList.remove("hidden");
+      btnCopiarOrcamento.classList.remove("hidden");
+      btnCopiarTecnico.classList.remove("hidden");
+
+      if (tipoTransporte === "van_manual") {
+        const valorVanManual = normalizarNumero(valorVanManualInput.value);
+
+        if (!Number.isFinite(valorVanManual) || valorVanManual < 0) {
+          exibirErro("Informe um valor válido para a van manual/orçada.");
+          btnCopiarWhatsapp.classList.add("hidden");
+          btnCopiarOrcamento.classList.add("hidden");
+          btnCopiarTecnico.classList.add("hidden");
+          return false;
+        }
+
+        const resultado = calcularLinha({
+          evento,
+          periodo,
+          transporte: "van_manual",
+          numMusicos,
+          horasTotais: dadosBase.horasTotaisMaoDeObra,
+          distanciaTotal: dadosBase.distanciaTotal,
+          valorVanManual,
+          incluirSom,
+          incluirNF,
+          pedagio,
+          hospedagem,
+          alimentacao
+        });
+
+        resultadoDetalhado.innerHTML = montarCardDetalhado({
+          titulo: "Resultado detalhado",
+          subtitulo: `${nomePeriodo(periodo)} • ${numMusicos} músicos • ${evento}`,
+          resultado,
+          transporteTexto: "van manual/orçada",
+          incluirSom
+        });
+
+        ultimoTextoCopiarWhatsapp = montarTextoWhatsappResumo({
+          periodo,
+          numMusicos,
+          evento,
+          dadosBase,
+          resultado,
+          incluirSom,
+          transporteTexto: "van manual/orçada"
+        });
+
+        ultimoTextoCopiarOrcamento = montarTextoOrcamento({
+          periodo,
+          numMusicos,
+          evento,
+          dadosBase,
+          resultado,
+          incluirSom,
+          transporteTexto: "van manual/orçada",
+          cidadeDestino,
+          nomeSolicitante
+        });
+
+        ultimoTextoCopiarTecnico = montarTextoTecnicoUnico({
+          periodo,
+          numMusicos,
+          evento,
+          transporteTexto: "van manual/orçada",
+          dadosBase,
+          resultado,
+          incluirSom
+        });
+
+        if (recomendacao !== "van") {
+          exibirInfo(`Recomendação logística contrariada: para este cenário, a sugestão seria <strong>${nomeTransporte(recomendacao)}</strong>, mas foi escolhida <strong>van manual/orçada</strong>.`);
+        }
+
+        atualizarRodapeMinimo();
+        return true;
+      }
+
+      if (tipoTransporte === "comparar") {
+        const resultadoProprio = calcularLinha({
+          evento,
+          periodo,
+          transporte: "proprio",
+          numMusicos,
+          horasTotais: dadosBase.horasTotaisMaoDeObra,
+          distanciaTotal: dadosBase.distanciaTotal,
+          incluirSom,
+          incluirNF,
+          pedagio,
+          hospedagem,
+          alimentacao
+        });
+
+        const resultadoVan = calcularLinha({
+          evento,
+          periodo,
+          transporte: "van",
+          numMusicos,
+          horasTotais: dadosBase.horasTotaisMaoDeObra,
+          distanciaTotal: dadosBase.distanciaTotal,
+          incluirSom,
+          incluirNF,
+          pedagio,
+          hospedagem,
+          alimentacao
+        });
+
+        resultadoDetalhado.innerHTML =
+          montarCardDetalhado({
+            titulo: "Resultado detalhado — Veículo próprio",
+            subtitulo: `${nomePeriodo(periodo)} • ${numMusicos} músicos • ${evento}`,
+            resultado: resultadoProprio,
+            transporteTexto: "veículo próprio",
+            incluirSom
+          }) +
+          montarCardDetalhado({
+            titulo: "Resultado detalhado — Van calculada",
+            subtitulo: `${nomePeriodo(periodo)} • ${numMusicos} músicos • ${evento}`,
+            resultado: resultadoVan,
+            transporteTexto: "van calculada",
+            incluirSom
+          });
+
+        ultimoTextoCopiarWhatsapp = montarTextoWhatsappComparativo({
+          periodo,
+          numMusicos,
+          evento,
+          dadosBase,
+          resultadoProprio,
+          resultadoVan
+        });
+
+        ultimoTextoCopiarOrcamento = montarTextoOrcamentoComparativo({
+          periodo,
+          numMusicos,
+          evento,
+          dadosBase,
+          resultadoProprio,
+          resultadoVan,
+          cidadeDestino,
+          nomeSolicitante
+        });
+
+        ultimoTextoCopiarTecnico = montarTextoTecnicoComparativo({
+          periodo,
+          numMusicos,
+          evento,
+          dadosBase,
+          resultadoProprio,
+          resultadoVan,
+          incluirSom
+        });
+
+        atualizarRodapeMinimo();
+        return true;
+      }
+
+      const resultado = calcularLinha({
+        evento,
+        periodo,
+        transporte: tipoTransporte,
+        numMusicos,
+        horasTotais: dadosBase.horasTotaisMaoDeObra,
+        distanciaTotal: dadosBase.distanciaTotal,
+        incluirSom,
+        incluirNF,
+        pedagio,
+        hospedagem,
+        alimentacao
+      });
+
+      const transporteTextoCard = tipoTransporte === "proprio" ? "veículo próprio" : "van calculada";
+
+      resultadoDetalhado.innerHTML = montarCardDetalhado({
+        titulo: "Resultado detalhado",
+        subtitulo: `${nomePeriodo(periodo)} • ${numMusicos} músicos • ${evento}`,
+        resultado,
+        transporteTexto: transporteTextoCard,
+        incluirSom
+      });
+
+      ultimoTextoCopiarWhatsapp = montarTextoWhatsappResumo({
+        periodo,
+        numMusicos,
+        evento,
+        dadosBase,
+        resultado,
+        incluirSom,
+        transporteTexto: transporteTextoCard
+      });
+
+      ultimoTextoCopiarOrcamento = montarTextoOrcamento({
+        periodo,
+        numMusicos,
+        evento,
+        dadosBase,
+        resultado,
+        incluirSom,
+        transporteTexto: transporteTextoCard,
+        cidadeDestino,
+        nomeSolicitante
+      });
+
+      ultimoTextoCopiarTecnico = montarTextoTecnicoUnico({
+        periodo,
+        numMusicos,
+        evento,
+        transporteTexto: transporteTextoCard,
+        dadosBase,
+        resultado,
+        incluirSom
+      });
+
+      if (tipoTransporte !== recomendacao) {
+        exibirInfo(`Recomendação logística contrariada: para este cenário, a sugestão seria <strong>${nomeTransporte(recomendacao)}</strong>, mas foi escolhido <strong>${nomeTransporte(tipoTransporte)}</strong>.`);
+      }
+
+      atualizarRodapeMinimo();
+      return true;
+    }
+
+    function calcularTudo() {
+      ocultarErro();
+      ocultarInfo();
+
+      const distanciaIda = normalizarNumero(distanciaInput.value);
+      const tempoIda = normalizarNumero(tempoInput.value);
+      const modoExibicao = modoExibicaoSelect.value;
+
+      if (!Number.isFinite(distanciaIda) || distanciaIda <= 0) {
+        exibirErro("Informe uma distância de ida válida em km.");
+        return;
+      }
+
+      if (!Number.isFinite(tempoIda) || tempoIda <= 0) {
+        exibirErro("Informe um tempo de ida válido em horas.");
+        return;
+      }
+
+      let horasShow = CONFIG.horasShowPadrao;
+
+      if (modoExibicao === "detalhado") {
+        const horasShowDigitadas = normalizarNumero(tempoShowDetalhadoInput.value);
+        if (!Number.isFinite(horasShowDigitadas) || horasShowDigitadas <= 0) {
+          exibirErro("Informe um tempo de show válido em horas.");
+          return;
+        }
+        horasShow = horasShowDigitadas;
+      }
+
+      const periodoBase = periodoBaseSelect.value;
+      const distanciaTotal = distanciaIda * 2;
+      const tempoTotalDeslocamento = tempoIda * 2;
+      const horasTotaisMaoDeObra = horasShow + CONFIG.horasMontagem + tempoTotalDeslocamento;
+
+      const dadosBase = {
+        distanciaIda,
+        tempoIda,
+        periodoBase,
+        horasShow,
+        distanciaTotal,
+        tempoTotalDeslocamento,
+        horasTotaisMaoDeObra
+      };
+
+      gerarResumo(dadosBase);
+
+      if (modoExibicao === "completo") {
+        renderizarModoCompleto(dadosBase);
+      } else {
+        const ok = renderizarModoDetalhado(dadosBase);
+        if (!ok) return;
+      }
+
+      resumoCard.classList.remove("hidden");
+      resultadosCard.classList.remove("hidden");
+    }
+
+    function limparTudo() {
+      distanciaInput.value = "";
+      tempoInput.value = "";
+      modoExibicaoSelect.value = "completo";
+      periodoBaseSelect.value = "diurno";
+      tempoShowDetalhadoInput.value = "2";
+      numMusicosSelect.value = "6";
+      tipoEventoSelect.value = "Bar promo";
+      cidadeDestinoInput.value = "";
+      nomeSolicitanteInput.value = "";
+      tipoTransporteDetalhadoSelect.value = "proprio";
+      incluirSomSelect.value = "nao";
+      incluirNFSelect.value = "nao";
+      valorVanManualInput.value = "";
+      pedagioAdicionalInput.value = "0";
+      hospedagemAdicionalInput.value = "0";
+      alimentacaoAdicionalInput.value = "0";
+
+      filtrosDetalhados.classList.add("hidden");
+      campoVanManualWrap.classList.add("hidden");
+      btnCopiarWhatsapp.classList.add("hidden");
+      btnCopiarOrcamento.classList.add("hidden");
+      btnCopiarTecnico.classList.add("hidden");
+      rodapeMinimo.classList.add("hidden");
+
+      ultimoTextoCopiarWhatsapp = "";
+      ultimoTextoCopiarOrcamento = "";
+      ultimoTextoCopiarTecnico = "";
+
+      ocultarErro();
+      ocultarInfo();
+      okBox.style.display = "none";
+      okBox.textContent = "";
+
+      resumoCard.classList.add("hidden");
+      resultadosCard.classList.add("hidden");
+      resumoGrid.innerHTML = "";
+      tabelasContainer.innerHTML = "";
+      resultadoDetalhado.innerHTML = "";
+      resultadoDetalhado.classList.add("hidden");
+
+      distanciaInput.focus();
+    }
+
+    function atualizarCamposDinamicos() {
+      const modo = modoExibicaoSelect.value;
+      const transporte = tipoTransporteDetalhadoSelect.value;
+
+      if (modo === "detalhado") {
+        filtrosDetalhados.classList.remove("hidden");
+      } else {
+        filtrosDetalhados.classList.add("hidden");
+        btnCopiarWhatsapp.classList.add("hidden");
+        btnCopiarOrcamento.classList.add("hidden");
+        btnCopiarTecnico.classList.add("hidden");
+      }
+
+      if (modo === "detalhado" && transporte === "van_manual") {
+        campoVanManualWrap.classList.remove("hidden");
+      } else {
+        campoVanManualWrap.classList.add("hidden");
+      }
+    }
+
+    async function copiarTexto(texto, msgSucesso) {
+      if (!texto) return;
+
+      try {
+        await navigator.clipboard.writeText(texto);
+        exibirOk(msgSucesso);
+      } catch (error) {
+        const area = document.createElement("textarea");
+        area.value = texto;
+        document.body.appendChild(area);
+        area.select();
+        document.execCommand("copy");
+        document.body.removeChild(area);
+        exibirOk(msgSucesso);
+      }
+    }
+
+    modoExibicaoSelect.addEventListener("change", atualizarCamposDinamicos);
+    tipoTransporteDetalhadoSelect.addEventListener("change", atualizarCamposDinamicos);
+    btnCalcular.addEventListener("click", calcularTudo);
+    btnLimpar.addEventListener("click", limparTudo);
+
+    btnCopiarWhatsapp.addEventListener("click", function() {
+      copiarTexto(ultimoTextoCopiarWhatsapp, "Resumo WhatsApp copiado.");
+    });
+
+    btnCopiarOrcamento.addEventListener("click", function() {
+      copiarTexto(ultimoTextoCopiarOrcamento, "Orçamento copiado.");
+    });
+
+    btnCopiarTecnico.addEventListener("click", function() {
+      copiarTexto(ultimoTextoCopiarTecnico, "Texto técnico copiado.");
+    });
+
+    [
+      distanciaInput,
+      tempoInput,
+      tempoShowDetalhadoInput,
+      valorVanManualInput,
+      pedagioAdicionalInput,
+      hospedagemAdicionalInput,
+      alimentacaoAdicionalInput,
+      cidadeDestinoInput,
+      nomeSolicitanteInput
+    ].forEach(input => {
+      input.addEventListener("keydown", function(e) {
+        if (e.key === "Enter") {
+          calcularTudo();
+        }
+      });
+    });
+
+    atualizarCamposDinamicos();
+  </script>
+</body>
+</html>
